@@ -2337,7 +2337,8 @@ let rec doSpecList (suggestedAnonName: string) (* This string will be part of
       | A.Tint64 -> 7
       | A.Tfloat -> 8
       | A.Tdouble -> 9
-      | _ -> 10 (* There should be at most one of the others *)
+      | A.Tint128 -> 10
+      | _ -> 11 (* There should be at most one of the others *)
     in
     List.stable_sort (fun ts1 ts2 -> compare (order ts1) (order ts2)) tspecs' 
   in
@@ -2403,6 +2404,11 @@ let rec doSpecList (suggestedAnonName: string) (* This string will be part of
     | [A.Tsigned; A.Tint64] -> TInt(ILongLong, [])
 
     | [A.Tunsigned; A.Tint64] -> TInt(IULongLong, [])
+    
+    (* __int128 is an optional extension, but we support it *)
+    | [A.Tint128] -> TInt(IInt128, [])
+    | [A.Tsigned; A.Tint128] -> TInt(IInt128, [])
+    | [A.Tunsigned; A.Tint64] -> TInt(IUInt128, [])
 
     | [A.Tfloat] -> TFloat(FFloat, [])
     | [A.Tdouble] -> TFloat(FDouble, [])
