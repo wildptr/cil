@@ -1,20 +1,23 @@
 # 1 "cilcode.tmp/ex35.cil.c"
+# 1 "<built-in>"
 # 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 1 "<command-line>" 2
 # 1 "cilcode.tmp/ex35.cil.c"
 # 1 "cilcode.tmp/ex35.c"
-struct __anonstruct_T1_1 {
+struct __anonstruct_T1_476363767 {
    char *key ;
    char *value ;
 };
 # 1 "cilcode.tmp/ex35.c"
-typedef struct __anonstruct_T1_1 T1;
+typedef struct __anonstruct_T1_476363767 T1;
 # 7 "cilcode.tmp/ex35.c"
-struct __anonstruct_T3_2 {
+struct __anonstruct_T3_938603720 {
    long type ;
    char *value ;
 };
 # 7 "cilcode.tmp/ex35.c"
-typedef struct __anonstruct_T3_2 T3;
+typedef struct __anonstruct_T3_938603720 T3;
 # 13 "cilcode.tmp/ex35.c"
 static T3 __constr_expr_0 = {1L, (char *)1};
 # 13 "cilcode.tmp/ex35.c"

@@ -1,35 +1,32 @@
 # 1 "cilcode.tmp/ex22.c"
+# 1 "<built-in>"
 # 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 1 "<command-line>" 2
 # 1 "cilcode.tmp/ex22.c"
 # 1 "/usr/include/stdio.h" 1 3 4
 # 27 "/usr/include/stdio.h" 3 4
 # 1 "/usr/include/features.h" 1 3 4
-# 341 "/usr/include/features.h" 3 4
-# 1 "/usr/include/stdc-predef.h" 1 3 4
-# 30 "/usr/include/stdc-predef.h" 3 4
-# 1 "/usr/include/x86_64-linux-gnu/bits/predefs.h" 1 3 4
-# 31 "/usr/include/stdc-predef.h" 2 3 4
-# 342 "/usr/include/features.h" 2 3 4
-# 371 "/usr/include/features.h" 3 4
+# 374 "/usr/include/features.h" 3 4
 # 1 "/usr/include/x86_64-linux-gnu/sys/cdefs.h" 1 3 4
 # 385 "/usr/include/x86_64-linux-gnu/sys/cdefs.h" 3 4
 # 1 "/usr/include/x86_64-linux-gnu/bits/wordsize.h" 1 3 4
 # 386 "/usr/include/x86_64-linux-gnu/sys/cdefs.h" 2 3 4
-# 372 "/usr/include/features.h" 2 3 4
-# 395 "/usr/include/features.h" 3 4
+# 375 "/usr/include/features.h" 2 3 4
+# 398 "/usr/include/features.h" 3 4
 # 1 "/usr/include/x86_64-linux-gnu/gnu/stubs.h" 1 3 4
 # 10 "/usr/include/x86_64-linux-gnu/gnu/stubs.h" 3 4
 # 1 "/usr/include/x86_64-linux-gnu/gnu/stubs-64.h" 1 3 4
 # 11 "/usr/include/x86_64-linux-gnu/gnu/stubs.h" 2 3 4
-# 396 "/usr/include/features.h" 2 3 4
+# 399 "/usr/include/features.h" 2 3 4
 # 28 "/usr/include/stdio.h" 2 3 4
 
 
 
 
 
-# 1 "/usr/lib/gcc/x86_64-linux-gnu/4.7/include/stddef.h" 1 3 4
-# 213 "/usr/lib/gcc/x86_64-linux-gnu/4.7/include/stddef.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/4.9/include/stddef.h" 1 3 4
+# 212 "/usr/lib/gcc/x86_64-linux-gnu/4.9/include/stddef.h" 3 4
 typedef long unsigned int size_t;
 # 34 "/usr/include/stdio.h" 2 3 4
 
@@ -63,9 +60,9 @@ typedef unsigned long int __uint64_t;
 
 typedef long int __quad_t;
 typedef unsigned long int __u_quad_t;
-# 130 "/usr/include/x86_64-linux-gnu/bits/types.h" 3 4
+# 121 "/usr/include/x86_64-linux-gnu/bits/types.h" 3 4
 # 1 "/usr/include/x86_64-linux-gnu/bits/typesizes.h" 1 3 4
-# 131 "/usr/include/x86_64-linux-gnu/bits/types.h" 2 3 4
+# 122 "/usr/include/x86_64-linux-gnu/bits/types.h" 2 3 4
 
 
 typedef unsigned long int __dev_t;
@@ -150,10 +147,10 @@ typedef struct _IO_FILE FILE;
 typedef struct _IO_FILE __FILE;
 # 74 "/usr/include/stdio.h" 3 4
 # 1 "/usr/include/libio.h" 1 3 4
-# 32 "/usr/include/libio.h" 3 4
+# 31 "/usr/include/libio.h" 3 4
 # 1 "/usr/include/_G_config.h" 1 3 4
 # 15 "/usr/include/_G_config.h" 3 4
-# 1 "/usr/lib/gcc/x86_64-linux-gnu/4.7/include/stddef.h" 1 3 4
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/4.9/include/stddef.h" 1 3 4
 # 16 "/usr/include/_G_config.h" 2 3 4
 
 
@@ -185,15 +182,15 @@ typedef struct
   __off64_t __pos;
   __mbstate_t __state;
 } _G_fpos64_t;
-# 33 "/usr/include/libio.h" 2 3 4
-# 50 "/usr/include/libio.h" 3 4
-# 1 "/usr/lib/gcc/x86_64-linux-gnu/4.7/include/stdarg.h" 1 3 4
-# 40 "/usr/lib/gcc/x86_64-linux-gnu/4.7/include/stdarg.h" 3 4
+# 32 "/usr/include/libio.h" 2 3 4
+# 49 "/usr/include/libio.h" 3 4
+# 1 "/usr/lib/gcc/x86_64-linux-gnu/4.9/include/stdarg.h" 1 3 4
+# 40 "/usr/lib/gcc/x86_64-linux-gnu/4.9/include/stdarg.h" 3 4
 typedef __builtin_va_list __gnuc_va_list;
-# 51 "/usr/include/libio.h" 2 3 4
-# 145 "/usr/include/libio.h" 3 4
+# 50 "/usr/include/libio.h" 2 3 4
+# 144 "/usr/include/libio.h" 3 4
 struct _IO_jump_t; struct _IO_FILE;
-# 155 "/usr/include/libio.h" 3 4
+# 154 "/usr/include/libio.h" 3 4
 typedef void _IO_lock_t;
 
 
@@ -207,7 +204,7 @@ struct _IO_marker {
 
 
   int _pos;
-# 178 "/usr/include/libio.h" 3 4
+# 177 "/usr/include/libio.h" 3 4
 };
 
 
@@ -218,7 +215,7 @@ enum __codecvt_result
   __codecvt_error,
   __codecvt_noconv
 };
-# 246 "/usr/include/libio.h" 3 4
+# 245 "/usr/include/libio.h" 3 4
 struct _IO_FILE {
   int _flags;
 
@@ -259,9 +256,9 @@ struct _IO_FILE {
 
 
   _IO_lock_t *_lock;
-# 294 "/usr/include/libio.h" 3 4
+# 293 "/usr/include/libio.h" 3 4
   __off64_t _offset;
-# 303 "/usr/include/libio.h" 3 4
+# 302 "/usr/include/libio.h" 3 4
   void *__pad1;
   void *__pad2;
   void *__pad3;
@@ -283,7 +280,7 @@ struct _IO_FILE_plus;
 extern struct _IO_FILE_plus _IO_2_1_stdin_;
 extern struct _IO_FILE_plus _IO_2_1_stdout_;
 extern struct _IO_FILE_plus _IO_2_1_stderr_;
-# 339 "/usr/include/libio.h" 3 4
+# 338 "/usr/include/libio.h" 3 4
 typedef __ssize_t __io_read_fn (void *__cookie, char *__buf, size_t __nbytes);
 
 
@@ -305,11 +302,11 @@ typedef int __io_seek_fn (void *__cookie, __off64_t *__pos, int __w);
 
 
 typedef int __io_close_fn (void *__cookie);
-# 391 "/usr/include/libio.h" 3 4
+# 390 "/usr/include/libio.h" 3 4
 extern int __underflow (_IO_FILE *);
 extern int __uflow (_IO_FILE *);
 extern int __overflow (_IO_FILE *, int);
-# 435 "/usr/include/libio.h" 3 4
+# 434 "/usr/include/libio.h" 3 4
 extern int _IO_getc (_IO_FILE *__fp);
 extern int _IO_putc (int __c, _IO_FILE *__fp);
 extern int _IO_feof (_IO_FILE *__fp) __attribute__ ((__nothrow__ , __leaf__));
@@ -324,7 +321,7 @@ extern int _IO_peekc_locked (_IO_FILE *__fp);
 extern void _IO_flockfile (_IO_FILE *) __attribute__ ((__nothrow__ , __leaf__));
 extern void _IO_funlockfile (_IO_FILE *) __attribute__ ((__nothrow__ , __leaf__));
 extern int _IO_ftrylockfile (_IO_FILE *) __attribute__ ((__nothrow__ , __leaf__));
-# 465 "/usr/include/libio.h" 3 4
+# 464 "/usr/include/libio.h" 3 4
 extern int _IO_vfscanf (_IO_FILE * __restrict, const char * __restrict,
    __gnuc_va_list, int *__restrict);
 extern int _IO_vfprintf (_IO_FILE *__restrict, const char *__restrict,

@@ -19,12 +19,15 @@
 <link title="Dataflow" rel="Chapter" href="Dataflow.html">
 <link title="Dominators" rel="Chapter" href="Dominators.html">
 <link title="Errormsg" rel="Chapter" href="Errormsg.html">
+<link title="Feature" rel="Chapter" href="Feature.html">
 <link title="Formatcil" rel="Chapter" href="Formatcil.html">
 <link title="Pretty" rel="Chapter" href="Pretty.html">
-<link title="Stats" rel="Chapter" href="Stats.html"><title>CIL API Documentation (version 1.7.3) : Index of values</title>
+<link title="Stats" rel="Chapter" href="Stats.html"><title>CIL API Documentation  : Index of values</title>
 </head>
 <body>
-<center><h1>Index of values</h1></center>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Index of values</h1>
 <table>
 <tr><td align="left"><br></td></tr>
 <tr><td><a href="Pretty.html#VAL(++)">(++)</a> [<a href="Pretty.html">Pretty</a>]</td>
@@ -355,7 +358,7 @@ A visitor that does constant folding.
 </td></tr>
 <tr><td><a href="Cil.html#VALconvertInts">convertInts</a> [<a href="Cil.html">Cil</a>]</td>
 <td><div class="info">
-<font color="#CCCCCC"></font></div>
+<span class="deprecated"></span></div>
 </td></tr>
 <tr><td><a href="Dataflow.ForwardsTransfer.html#VALcopy">copy</a> [<a href="Dataflow.ForwardsTransfer.html">Dataflow.ForwardsTransfer</a>]</td>
 <td><div class="info">
@@ -804,6 +807,16 @@ The empty clist
 Make an empty function
 </div>
 </td></tr>
+<tr><td><a href="Feature.html#VALenable">enable</a> [<a href="Feature.html">Feature</a>]</td>
+<td><div class="info">
+Enable a given feature, by name.
+</div>
+</td></tr>
+<tr><td><a href="Feature.html#VALenabled">enabled</a> [<a href="Feature.html">Feature</a>]</td>
+<td><div class="info">
+Check if a given feature is enabled.
+</div>
+</td></tr>
 <tr><td><a href="Cil.html#VALendsWith">endsWith</a> [<a href="Cil.html">Cil</a>]</td>
 <td><div class="info">
 return true if the first is a suffix of the second string
@@ -869,6 +882,11 @@ Whether to put this predecessor block in the worklist.
 <tr><td><a href="Dataflow.ForwardsTransfer.html#VALfilterStmt">filterStmt</a> [<a href="Dataflow.ForwardsTransfer.html">Dataflow.ForwardsTransfer</a>]</td>
 <td><div class="info">
 Whether to put this statement in the worklist.
+</div>
+</td></tr>
+<tr><td><a href="Feature.html#VALfind">find</a> [<a href="Feature.html">Feature</a>]</td>
+<td><div class="info">
+Find a feature by name.
 </div>
 </td></tr>
 <tr><td><a href="Dominators.html#VALfindNaturalLoops">findNaturalLoops</a> [<a href="Dominators.html">Dominators</a>]</td>
@@ -955,7 +973,7 @@ The data at function exit.
 <tr><td align="left"><br>G</td></tr>
 <tr><td><a href="Cil.html#VALgccBuiltins">gccBuiltins</a> [<a href="Cil.html">Cil</a>]</td>
 <td><div class="info">
-<font color="#CCCCCC"></font></div>
+<span class="deprecated"></span></div>
 </td></tr>
 <tr><td><a href="Alpha.html#VALgetAlphaPrefix">getAlphaPrefix</a> [<a href="Alpha.html">Alpha</a>]</td>
 <td></td></tr>
@@ -1130,7 +1148,7 @@ True if the argument is a function type
 </td></tr>
 <tr><td><a href="Cil.html#VALisInteger">isInteger</a> [<a href="Cil.html">Cil</a>]</td>
 <td><div class="info">
-<font color="#CCCCCC"></font></div>
+<span class="deprecated"></span></div>
 </td></tr>
 <tr><td><a href="Cil.html#VALisIntegralType">isIntegralType</a> [<a href="Cil.html">Cil</a>]</td>
 <td><div class="info">
@@ -1231,6 +1249,11 @@ How to print line directives
 <tr><td><a href="Cil.html#VALlineLength">lineLength</a> [<a href="Cil.html">Cil</a>]</td>
 <td><div class="info">
 The length used when wrapping output lines.
+</div>
+</td></tr>
+<tr><td><a href="Feature.html#VALlist_registered">list_registered</a> [<a href="Feature.html">Feature</a>]</td>
+<td><div class="info">
+List registered features.
 </div>
 </td></tr>
 <tr><td><a href="Cil.html#VALlittle_endian">little_endian</a> [<a href="Cil.html">Cil</a>]</td>
@@ -1445,7 +1468,7 @@ Make a while loop.
 </td></tr>
 <tr><td><a href="Cil.html#VALmsvcBuiltins">msvcBuiltins</a> [<a href="Cil.html">Cil</a>]</td>
 <td><div class="info">
-<font color="#CCCCCC"></font></div>
+<span class="deprecated"></span></div>
 </td></tr>
 <tr><td><a href="Cil.html#VALmsvcMode">msvcMode</a> [<a href="Cil.html">Cil</a>]</td>
 <td><div class="info">
@@ -1669,7 +1692,7 @@ Like <a href="Pretty.html#VALfprintf"><code class="code">Pretty.fprintf</code></
 </td></tr>
 <tr><td><a href="Cil.html#VALptrdiffType">ptrdiffType</a> [<a href="Cil.html">Cil</a>]</td>
 <td><div class="info">
-An unsigned integer type that fits pointer difference.
+An signed integer type that fits pointer difference.
 </div>
 </td></tr>
 <tr><td><a href="Errormsg.html#VALpurpleEscStr">purpleEscStr</a> [<a href="Errormsg.html">Errormsg</a>]</td>
@@ -1698,10 +1721,20 @@ A document that prints a real number
 </td></tr>
 <tr><td><a href="Errormsg.html#VALredEscStr">redEscStr</a> [<a href="Errormsg.html">Errormsg</a>]</td>
 <td></td></tr>
+<tr><td><a href="Feature.html#VALregister">register</a> [<a href="Feature.html">Feature</a>]</td>
+<td><div class="info">
+Register a feature to be used by CIL.
+</div>
+</td></tr>
 <tr><td><a href="Alpha.html#VALregisterAlphaName">registerAlphaName</a> [<a href="Alpha.html">Alpha</a>]</td>
 <td><div class="info">
 Register a name with an alpha conversion table to ensure that when later 
  we call newAlphaName we do not end up generating this one
+</div>
+</td></tr>
+<tr><td><a href="Feature.html#VALregistered">registered</a> [<a href="Feature.html">Feature</a>]</td>
+<td><div class="info">
+Check if a given feature is registered.
 </div>
 </td></tr>
 <tr><td><a href="Cil.html#VALremoveOffset">removeOffset</a> [<a href="Cil.html">Cil</a>]</td>
@@ -1901,7 +1934,7 @@ Represents an integer as for a given kind.
 </td></tr>
 <tr><td><a href="Cil.html#VALtruncateInteger64">truncateInteger64</a> [<a href="Cil.html">Cil</a>]</td>
 <td><div class="info">
-<font color="#CCCCCC"></font></div>
+<span class="deprecated"></span></div>
 </td></tr>
 <tr><td><a href="Cil.html#VALtypeAddAttributes">typeAddAttributes</a> [<a href="Cil.html">Cil</a>]</td>
 <td><div class="info">
@@ -2214,6 +2247,6 @@ Invokes a thunk, with printDepth temporarily set to the specified value
 0
 </div>
 </td></tr>
-</table><br>
+</table>
 </body>
 </html>

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<meta name="generator" content="hevea 2.06">
+<meta name="generator" content="hevea 2.23">
 
 <base target="main">
 <script language="JavaScript">
@@ -53,7 +53,7 @@ Values for <a href="api/Cil.html#TYPEattributeClass">operating on attributes</a>
 <h3 id="sec10" class="subsection">6.1&#XA0;&#XA0;Using the visitor</h3>
 <p><a id="sec-visitor"></a></p><p>One of the most useful tools exported by the CIL API is an implementation of
 the visitor pattern for CIL programs. The visiting engine scans depth-first
-the structure of a CIL program and at each node is queries a user-provided
+the structure of a CIL program and at each node it queries a user-provided
 visitor structure whether it should do one of the following operations: 
 </p><ul class="itemize"><li class="li-itemize">
 Ignore this node and all its descendants
@@ -62,7 +62,7 @@ of the children have changed.
 </li><li class="li-itemize">Replace the subtree rooted at the node with another tree.
 </li><li class="li-itemize">Replace the subtree with another tree, then descend into the children
 and rebuild the node if necessary and then invoke a user-specified function. 
-</li><li class="li-itemize">In addition to all of the above actions then visitor can specify that
+</li><li class="li-itemize">In addition to all of the above actions the visitor can specify that
 some instructions should be queued to be inserted before the current
 instruction or statement being visited. 
 </li></ul><p>By writing visitors you can customize the program traversal and
@@ -264,12 +264,11 @@ constructing and deconstructing:
 </li><li class="li-itemize"><a href="api/Formatcil.html#VALdExp">Formatcil.dExp</a> deconstructs <a href="api/Cil.html#TYPEexp">Cil.exp</a>.
 </li><li class="li-itemize"><a href="api/Formatcil.html#VALdType">Formatcil.dType</a> deconstructs <a href="api/Cil.html#TYPEtyp">Cil.typ</a>.
 </li><li class="li-itemize"><a href="api/Formatcil.html#VALdLval">Formatcil.dLval</a> deconstructs <a href="api/Cil.html#TYPElval">Cil.lval</a>.
-</li><li class="li-itemize"><a href="api/Formatcil.html#VALdInstr">Formatcil.dInstr</a> deconstructs <a href="api/Cil.html#TYPElval">Cil.lval</a>.
+</li><li class="li-itemize"><a href="api/Formatcil.html#VALdInstr">Formatcil.dInstr</a> deconstructs <a href="api/Cil.html#TYPEinstr">Cil.instr</a>.
 </li></ul><p>Below is an example using interpreted constructors. This example generates
 the CIL representation of code that scans an array backwards and initializes
 every even-index element with an expression:
 </p><pre class="verbatim"><span style="color:blue">Formatcil.cStmts
-  loc
   "int idx = sizeof(array) / sizeof(array[0]) - 1;
    while(idx &gt;= 0) {
      // Some statements to be run for all the elements of the array
@@ -280,6 +279,7 @@ every even-index element with an expression:
      idx = idx - 1;
    }"
   (fun n t -&gt; makeTempVar myfunc ~name:n t)
+  loc
   [ ("array", Fv myarray); 
     ("init", FS [stmt1; stmt2; stmt3]);
     ("init_even", Fe init_expr_for_even_elements) ]

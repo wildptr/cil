@@ -10,7 +10,7 @@ static int jtab_init  =    0;
 #line 2 "cilcode.tmp/ex42.c"
 static int doit(int x ) 
 { 
-  int __compgoto ;
+  unsigned long __compgoto ;
 
   {
 #line 5
@@ -23,13 +23,13 @@ static int doit(int x )
     jtab_init = 1;
   }
 #line 10
-  __compgoto = (int )jtab[x];
+  __compgoto = (unsigned long )jtab[x];
 #line 10
   switch (__compgoto) {
-  case 1: 
+  case 1UL: 
 #line 10
   goto lbl2;
-  case 0: 
+  case 0UL: 
 #line 10
   goto lbl1;
   default: 

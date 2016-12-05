@@ -2,25 +2,25 @@
 /* print_CIL_Input is true */
 
 #line 1 "cilcode.tmp/ex48.c"
-struct __anonstruct____missing_field_name_3 {
+struct __anonstruct____missing_field_name_109580352 {
    int u ;
    int v ;
 };
 #line 1 "cilcode.tmp/ex48.c"
-struct __anonstruct____missing_field_name_2 {
+struct __anonstruct____missing_field_name_829014867 {
    int y ;
    int z ;
-   struct __anonstruct____missing_field_name_3 __annonCompField1 ;
+   struct __anonstruct____missing_field_name_109580352 __annonCompField1 ;
 };
 #line 1 "cilcode.tmp/ex48.c"
-struct __anonstruct_a_1 {
+struct __anonstruct_a_84838698 {
    int x ;
-   struct __anonstruct____missing_field_name_2 __annonCompField2 ;
+   struct __anonstruct____missing_field_name_829014867 __annonCompField2 ;
 };
 #line 1 "cilcode.tmp/ex48.c"
 int main(void) 
 { 
-  struct __anonstruct_a_1 a ;
+  struct __anonstruct_a_84838698 a ;
 
   {
 #line 10

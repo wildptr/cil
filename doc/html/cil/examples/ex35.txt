@@ -2,19 +2,19 @@
 /* print_CIL_Input is true */
 
 #line 1 "cilcode.tmp/ex35.c"
-struct __anonstruct_T1_1 {
+struct __anonstruct_T1_476363767 {
    char *key ;
    char *value ;
 };
 #line 1 "cilcode.tmp/ex35.c"
-typedef struct __anonstruct_T1_1 T1;
+typedef struct __anonstruct_T1_476363767 T1;
 #line 7 "cilcode.tmp/ex35.c"
-struct __anonstruct_T3_2 {
+struct __anonstruct_T3_938603720 {
    long type ;
    char *value ;
 };
 #line 7 "cilcode.tmp/ex35.c"
-typedef struct __anonstruct_T3_2 T3;
+typedef struct __anonstruct_T3_938603720 T3;
 #line 13 "cilcode.tmp/ex35.c"
 static T3 __constr_expr_0  =    {1L, (char *)1};
 #line 13 "cilcode.tmp/ex35.c"

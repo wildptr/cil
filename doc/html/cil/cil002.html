@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<meta name="generator" content="hevea 2.06">
+<meta name="generator" content="hevea 2.23">
 
 <base target="main">
 <script language="JavaScript">
@@ -36,17 +36,16 @@ Get the source code.
 <ol class="enumerate" type=a><li class="li-enumerate">
 Download the CIL
 <a href="http://sourceforge.net/projects/cil/files/cil/">distribution</a>
-(latest version is
-<a href="http://sourceforge.net/projects/cil/files/cil/cil-1.7.3.tar.gz"><span style="font-family:monospace">http://sourceforge.net/projects/cil/files/cil/cil-1.7.3.tar.gz</span></a>).
-See the Section&#XA0;<a >??</a> for recent changes to the CIL distribution.
+(latest version is<br>
+ <a href="http://sourceforge.net/projects/cil/files/cil/cil-1.7.3.tar.gz"><span style="font-family:monospace">http://sourceforge.net/projects/cil/files/cil/cil-1.7.3.tar.gz</span></a>).
 </li><li class="li-enumerate">Unzip and untar the source distribution. This will create a directory
 called <span style="font-family:monospace">cil</span> whose structure is explained below. <br>
  <span style="font-family:monospace">&#XA0;&#XA0;&#XA0;&#XA0;tar xvfz cil-1.7.3.tar.gz</span>
 </li></ol>
 </li><li class="li-itemize"><em>Git Repository</em>: <br>
  Alternately, you can download an up to the minute version of CIL
-from our Subversion repository at:
-<pre class="verbatim">    git clone git://git.code.sf.net/p/cil/code cil-code
+from our git repository at:
+<pre class="verbatim">    git clone git://git.code.sf.net/p/cil/code cil
 </pre>There is also a Github mirror:
 <pre class="verbatim">    git clone git://github.com/kerneis/cil.git
 </pre>However, the Git version may be less stable than the released
@@ -59,12 +58,7 @@ GNU make to build the distribution. If you are on Windows, at least the
  &#XA0;&#XA0;&#XA0;&#XA0;<code>make</code><br>
  &#XA0;&#XA0;&#XA0;&#XA0;<code>make quicktest</code><br>
 
-</li><li class="li-enumerate">You should now find <span style="font-family:monospace">cilly.asm.exe</span> in a subdirectory of <span style="font-family:monospace">obj</span>. The
-name of the subdirectory is either <span style="font-family:monospace">x86_WIN32</span> if you are using <span style="font-family:monospace">cygwin</span>
-on Windows or <span style="font-family:monospace">x86_LINUX</span> if you are using Linux (although you should be
-using instead the Perl wrapper <span style="font-family:monospace">bin/cilly</span>). Note that we do not have an
-<span style="font-family:monospace">install</span> make target and you should use Cil from the development
-directory.
+</li><li class="li-enumerate">You should now find <span style="font-family:monospace">cilly.native.exe</span> in <span style="font-family:monospace">bin</span>.
 </li></ol><p>The <span style="font-family:monospace">configure</span> script tries to find appropriate defaults for your system.
 You can control its actions by passing the following arguments:
 </p><ul class="itemize"><li class="li-itemize">
@@ -99,15 +93,7 @@ Start with a clean CIL directory
 Microsoft Visual Studio. You can do this by choosing Programs/Microsoft
 Visual Studio/Tools/Command Prompt. Check that you can run <span style="font-family:monospace">cl</span>. 
 </li><li class="li-enumerate">Ensure that <span style="font-family:monospace">ocamlc</span> refers to a Win32 version of ocaml. Run <span style="font-family:monospace">ocamlc
--v</span> and look at the path to the standard library. If you have several
-versions of ocaml, you must set the following variables:
-<pre class="verbatim">      set OCAMLWIN=C:/Programs/ocaml-win
-
-      set OCAMLLIB=%OCAMLWIN%/lib
-      set PATH=%OCAMLWIN%/bin;%PATH%
-      set INCLUDE=%INCLUDE%;%OCAMLWIN%/inc
-      set LIB=%LIB%;%OCAMLWIN%/lib;obj/x86_WIN32
-   </pre></li><li class="li-enumerate">Run <span style="font-family:monospace">bash -c "./configure CC=cl"</span>.
+-v</span> and look at the path to the standard library.</li><li class="li-enumerate">Run <span style="font-family:monospace">bash -c "./configure CC=cl"</span>.
 </li><li class="li-enumerate">Run <span style="font-family:monospace">bash -c "make WIN32=1 quickbuild"</span>
 </li><li class="li-enumerate">Run <span style="font-family:monospace">bash -c "make WIN32=1 NATIVECAML=1 cilly</span>
 </li><li class="li-enumerate">Run <span style="font-family:monospace">bash -c "make WIN32=1 doc</span>

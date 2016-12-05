@@ -20,8 +20,8 @@
 \@@addtocsec{htoc}{sec17}{0}{\@print{7}\quad{}The CIL Driver{}}
 \newlabel{sec-driver}{{7}{X}}
 \@@addtocsec{htoc}{sec18}{1}{\@print{7.1}\quad{}\t{cilly} Options{}}
-\@@addtocsec{htoc}{sec19}{1}{\@print{7.2}\quad{}\t{cilly.asm} Options{}}
-\newlabel{sec-cilly-asm-options}{{7.2}{X}}
+\@@addtocsec{htoc}{sec19}{1}{\@print{7.2}\quad{}\t{cilly.native} Options{}}
+\newlabel{sec-cilly.native-options}{{7.2}{X}}
 \@@addtocsec{htoc}{sec20}{1}{\@print{7.3}\quad{}Internal Options{}}
 \newlabel{sec-cilly-internal-options}{{7.3}{X}}
 \@@addtocsec{htoc}{sec21}{1}{\@print{7.4}\quad{}Specifying a machine model{}}

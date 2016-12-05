@@ -18,9 +18,10 @@
 <link title="Dataflow" rel="Chapter" href="Dataflow.html">
 <link title="Dominators" rel="Chapter" href="Dominators.html">
 <link title="Errormsg" rel="Chapter" href="Errormsg.html">
+<link title="Feature" rel="Chapter" href="Feature.html">
 <link title="Formatcil" rel="Chapter" href="Formatcil.html">
 <link title="Pretty" rel="Chapter" href="Pretty.html">
-<link title="Stats" rel="Chapter" href="Stats.html"><title>CIL API Documentation (version 1.7.3) : Cil</title>
+<link title="Stats" rel="Chapter" href="Stats.html"><title>CIL API Documentation  : Cil</title>
 </head>
 <body>
 <code class="code"><span class="keyword">sig</span><br>
@@ -35,7 +36,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;globinit&nbsp;:&nbsp;<span class="constructor">Cil</span>.fundec&nbsp;option;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">mutable</span>&nbsp;globinitcalled&nbsp;:&nbsp;bool;<br>
 &nbsp;&nbsp;}<br>
-&nbsp;&nbsp;<span class="keyword">and</span>&nbsp;comment&nbsp;=&nbsp;<span class="constructor">Cil</span>.location&nbsp;*&nbsp;string<br>
+&nbsp;&nbsp;<span class="keyword">and</span>&nbsp;comment&nbsp;=&nbsp;location&nbsp;*&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">and</span>&nbsp;global&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">GType</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Cil</span>.typeinfo&nbsp;*&nbsp;<span class="constructor">Cil</span>.location<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">GCompTag</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Cil</span>.compinfo&nbsp;*&nbsp;<span class="constructor">Cil</span>.location<br>
@@ -73,9 +74,11 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">IULong</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">ILongLong</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">IULongLong</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">IInt128</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">IUInt128</span><br>
 &nbsp;&nbsp;<span class="keyword">and</span>&nbsp;fkind&nbsp;=&nbsp;<span class="constructor">FFloat</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">FDouble</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">FLongDouble</span><br>
 &nbsp;&nbsp;<span class="keyword">and</span>&nbsp;attribute&nbsp;=&nbsp;<span class="constructor">Attr</span>&nbsp;<span class="keyword">of</span>&nbsp;string&nbsp;*&nbsp;<span class="constructor">Cil</span>.attrparam&nbsp;list<br>
-&nbsp;&nbsp;<span class="keyword">and</span>&nbsp;attributes&nbsp;=&nbsp;<span class="constructor">Cil</span>.attribute&nbsp;list<br>
+&nbsp;&nbsp;<span class="keyword">and</span>&nbsp;attributes&nbsp;=&nbsp;attribute&nbsp;list<br>
 &nbsp;&nbsp;<span class="keyword">and</span>&nbsp;attrparam&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">AInt</span>&nbsp;<span class="keyword">of</span>&nbsp;int<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">AStr</span>&nbsp;<span class="keyword">of</span>&nbsp;string<br>
@@ -184,7 +187,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">BOr</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">LAnd</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">LOr</span><br>
-&nbsp;&nbsp;<span class="keyword">and</span>&nbsp;lval&nbsp;=&nbsp;<span class="constructor">Cil</span>.lhost&nbsp;*&nbsp;<span class="constructor">Cil</span>.offset<br>
+&nbsp;&nbsp;<span class="keyword">and</span>&nbsp;lval&nbsp;=&nbsp;lhost&nbsp;*&nbsp;offset<br>
 &nbsp;&nbsp;<span class="keyword">and</span>&nbsp;lhost&nbsp;=&nbsp;<span class="constructor">Var</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Cil</span>.varinfo&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Mem</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Cil</span>.exp<br>
 &nbsp;&nbsp;<span class="keyword">and</span>&nbsp;offset&nbsp;=<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">NoOffset</span><br>
@@ -244,19 +247,12 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">TSArray</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Cil</span>.typsig&nbsp;*&nbsp;int64&nbsp;option&nbsp;*&nbsp;<span class="constructor">Cil</span>.attribute&nbsp;list<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">TSPtr</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Cil</span>.typsig&nbsp;*&nbsp;<span class="constructor">Cil</span>.attribute&nbsp;list<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">TSComp</span>&nbsp;<span class="keyword">of</span>&nbsp;bool&nbsp;*&nbsp;string&nbsp;*&nbsp;<span class="constructor">Cil</span>.attribute&nbsp;list<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">TSFun</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Cil</span>.typsig&nbsp;*&nbsp;<span class="constructor">Cil</span>.typsig&nbsp;list&nbsp;*&nbsp;bool&nbsp;*&nbsp;<span class="constructor">Cil</span>.attribute&nbsp;list<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">TSFun</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Cil</span>.typsig&nbsp;*&nbsp;<span class="constructor">Cil</span>.typsig&nbsp;list&nbsp;option&nbsp;*&nbsp;bool&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Cil</span>.attribute&nbsp;list<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">TSEnum</span>&nbsp;<span class="keyword">of</span>&nbsp;string&nbsp;*&nbsp;<span class="constructor">Cil</span>.attribute&nbsp;list<br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">TSBase</span>&nbsp;<span class="keyword">of</span>&nbsp;<span class="constructor">Cil</span>.typ<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;lowerConstants&nbsp;:&nbsp;bool&nbsp;<span class="constructor">Pervasives</span>.ref<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;insertImplicitCasts&nbsp;:&nbsp;bool&nbsp;<span class="constructor">Pervasives</span>.ref<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;featureDescr&nbsp;=&nbsp;{<br>
-&nbsp;&nbsp;&nbsp;&nbsp;fd_enabled&nbsp;:&nbsp;bool&nbsp;<span class="constructor">Pervasives</span>.ref;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;fd_name&nbsp;:&nbsp;string;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;fd_description&nbsp;:&nbsp;string;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;fd_extraopt&nbsp;:&nbsp;(string&nbsp;*&nbsp;<span class="constructor">Arg</span>.spec&nbsp;*&nbsp;string)&nbsp;list;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;fd_doit&nbsp;:&nbsp;<span class="constructor">Cil</span>.file&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;fd_post_check&nbsp;:&nbsp;bool;<br>
-&nbsp;&nbsp;}<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;compareLoc&nbsp;:&nbsp;<span class="constructor">Cil</span>.location&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Cil</span>.location&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;emptyFunction&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Cil</span>.fundec<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;setFormals&nbsp;:&nbsp;<span class="constructor">Cil</span>.fundec&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Cil</span>.varinfo&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>

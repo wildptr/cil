@@ -2,7 +2,7 @@
 /* print_CIL_Input is true */
 
 #line 2 "cilcode.tmp/ex7.c"
-enum __anonenum_x_1 {
+enum __anonenum_x_23726404 {
     FIVE = 5,
     SIX = 6,
     SEVEN = 7,
@@ -12,11 +12,11 @@ enum __anonenum_x_1 {
 #line 1 "cilcode.tmp/ex7.c"
 int main(void) 
 { 
-  enum __anonenum_x_1 x ;
+  enum __anonenum_x_23726404 x ;
 
   {
 #line 2
-  x = (enum __anonenum_x_1 )5;
+  x = (enum __anonenum_x_23726404 )5;
 #line 8
   return ((int )x);
 }

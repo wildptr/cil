@@ -24,7 +24,7 @@
 \tocitem \@locref{sec17}{\begin{@norefs}\@print{7}\quad{}The CIL Driver{}\end{@norefs}}
 \begin{tocenv}
 \tocitem \@locref{sec18}{\begin{@norefs}\@print{7.1}\quad{}\t{cilly} Options{}\end{@norefs}}
-\tocitem \@locref{sec19}{\begin{@norefs}\@print{7.2}\quad{}\t{cilly.asm} Options{}\end{@norefs}}
+\tocitem \@locref{sec19}{\begin{@norefs}\@print{7.2}\quad{}\t{cilly.native} Options{}\end{@norefs}}
 \tocitem \@locref{sec20}{\begin{@norefs}\@print{7.3}\quad{}Internal Options{}\end{@norefs}}
 \tocitem \@locref{sec21}{\begin{@norefs}\@print{7.4}\quad{}Specifying a machine model{}\end{@norefs}}
 \end{tocenv}

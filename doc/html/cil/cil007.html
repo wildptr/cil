@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<meta name="generator" content="hevea 2.06">
+<meta name="generator" content="hevea 2.23">
 
 <base target="main">
 <script language="JavaScript">
@@ -25,7 +25,7 @@ example modules, such as <span style="font-family:monospace">logwrites.ml</span>
 that instruments code to print the addresses of memory locations being
 written). Normally, you write another module like that, add command-line
 options and an invocation of your module in <span style="font-family:monospace">src/main.ml</span>. Once you compile
-CIL you will obtain the file <span style="font-family:monospace">obj/cilly.asm.exe</span>. </p><p>We wrote a driver for this executable that makes it easy to invoke your
+CIL you will obtain the file <span style="font-family:monospace">obj/cilly.native.exe</span>.</p><p>We wrote a driver for this executable that makes it easy to invoke your
 analysis on existing C code with very little manual intervention. This driver
 is <span style="font-family:monospace">bin/cilly</span> and is quite powerful. Note that the <span style="font-family:monospace">cilly</span> script
 is configured during installation with the path where CIL resides. This means
@@ -38,7 +38,7 @@ list &#X2013; the other flags use <span style="font-family:monospace">gcc</span>
 </p><ul class="itemize"><li class="li-itemize">
 preprocessing using the -D and -I arguments with the resulting 
 file left in <span style="font-family:monospace">hello.i</span>, 
-</li><li class="li-itemize">the invocation of the <span style="font-family:monospace">cilly.asm</span> application which parses <span style="font-family:monospace">hello.i</span>
+</li><li class="li-itemize">the invocation of the <span style="font-family:monospace">cilly.native</span> application which parses <span style="font-family:monospace">hello.i</span>
 converts it to CIL and the pretty-prints it to <span style="font-family:monospace">hello.cil.c</span>
 </li><li class="li-itemize">another round of preprocessing with the result placed in <span style="font-family:monospace">hello.cil.i</span>
 </li><li class="li-itemize">the true compilation with the result in <span style="font-family:monospace">hello.cil.o</span>
@@ -49,7 +49,7 @@ easy to use it with existing <span style="font-family:monospace">Makefiles</span
 </pre><p><span style="font-family:monospace">cilly</span> can also behave as the Microsoft Visual C compiler, if the first
 argument is <span style="font-family:monospace">--mode=MSVC</span>:
 </p><pre class="verbatim">bin/cilly --mode=MSVC /D HAPPY_MOOD /I myincludes hello.c /Fe hello.exe
-</pre><p>(This in turn will pass a <span style="font-family:monospace">--MSVC</span> flag to the underlying <span style="font-family:monospace">cilly.asm</span>
+</pre><p>(This in turn will pass a <span style="font-family:monospace">--MSVC</span> flag to the underlying <span style="font-family:monospace">cilly.native</span>
 process which will make it understand the Microsoft Visual C extensions)</p><p><span style="font-family:monospace">cilly</span> can also behave as the archiver <span style="font-family:monospace">ar</span>, if it is passed an
 argument <span style="font-family:monospace">--mode=AR</span>. Note that only the <span style="font-family:monospace">cr</span> mode is supported
 (create a new archive and replace all files in there). Therefore the
@@ -57,7 +57,7 @@ previous version of the archive is lost. You will also need to remove
 any other commands that operate on the generated library
 (e.g. <span style="font-family:monospace">ranlib</span>, <span style="font-family:monospace">lorder</span>), as the .a file is no longer an actual
 binary library.</p><p>Furthermore, <span style="font-family:monospace">cilly</span> allows you to pass some arguments on to the
-underlying <span style="font-family:monospace">cilly.asm</span> process. As a general rule all arguments that start
+underlying <span style="font-family:monospace">cilly.native</span> process. As a general rule all arguments that start
 with <span style="font-family:monospace">--</span> and that <span style="font-family:monospace">cilly</span> itself does not process, are passed on. For
 example, 
 </p><pre class="verbatim">bin/cilly --dologwrites -D HAPPY_MOOD -I myincludes hello.c -o hello.exe
@@ -80,7 +80,7 @@ For every file <span style="font-family:monospace">file.c</span> to compile
 <ol class="enumerate" type=a><li class="li-enumerate">
 Preprocess the file with the given arguments to 
 produce <span style="font-family:monospace">file.i</span>
-</li><li class="li-enumerate">Invoke <span style="font-family:monospace">cilly.asm</span> to produce a <span style="font-family:monospace">file.cil.c</span>
+</li><li class="li-enumerate">Invoke <span style="font-family:monospace">cilly.native</span> to produce a <span style="font-family:monospace">file.cil.c</span>
 </li><li class="li-enumerate">Preprocess to <span style="font-family:monospace">file.cil.i</span>
 </li><li class="li-enumerate">Invoke the underlying compiler to produce <span style="font-family:monospace">file.cil.o</span>
 </li></ol>
@@ -99,7 +99,7 @@ file that must be linked and see if it actually
 contains preprocessed source. Pass all those files to a 
 special merging application (described in
 Section&#XA0;<a href="merger.html#sec-merger">13</a>) to produce <span style="font-family:monospace">hello.exe_comb.c</span>
-</li><li class="li-enumerate">Invoke <span style="font-family:monospace">cilly.asm</span> to produce a <span style="font-family:monospace">hello.exe_comb.cil.c</span>
+</li><li class="li-enumerate">Invoke <span style="font-family:monospace">cilly.native</span> to produce a <span style="font-family:monospace">hello.exe_comb.cil.c</span>
 </li><li class="li-enumerate">Preprocess to <span style="font-family:monospace">hello.exe_comb.cil.i</span>
 </li><li class="li-enumerate">Invoke the underlying compiler to produce <span style="font-family:monospace">hello.exe_comb.cil.o</span>
 </li><li class="li-enumerate">Invoke the actual linker to produce <span style="font-family:monospace">hello.exe</span>
@@ -138,7 +138,7 @@ the original version of the archive is lost.
 is doing. 
 </li><li class="li-itemize"><span style="font-family:monospace">--merge</span> This tells <span style="font-family:monospace">cilly</span> to first attempt to collect into one
 source file all of the sources that make your application, and then to apply
-<span style="font-family:monospace">cilly.asm</span> on the resulting source. The sequence of actions in this case is
+<span style="font-family:monospace">cilly.native</span> on the resulting source. The sequence of actions in this case is
 described above and the merger itself is described in Section&#XA0;<a href="merger.html#sec-merger">13</a>.</li><li class="li-itemize"><span style="font-family:monospace">--leavealone=xxx</span>. Do not merge and do not present to CIL the files
 whose basename is "xxx". These files are compiled as usual and linked in at
 the end. 
@@ -156,11 +156,11 @@ directory. For example, the output of CIL will be put in a file
 named <span style="font-family:monospace">*.cil.c</span>.
 </li><li class="li-itemize"><span style="font-family:monospace">--save-temps</span>. Temporay files are preserved in the current directory.
 </li></ul>
-<h3 id="sec19" class="subsection">7.2&#XA0;&#XA0;<span style="font-family:monospace">cilly.asm</span> Options</h3>
+<h3 id="sec19" class="subsection">7.2&#XA0;&#XA0;<span style="font-family:monospace">cilly.native</span> Options</h3>
 <p>
-<a id="sec-cilly-asm-options"></a></p><p>All of the options that start with <span style="font-family:monospace">--</span> and are not understood by
-<span style="font-family:monospace">cilly</span> are passed on to <span style="font-family:monospace">cilly.asm</span>. <span style="font-family:monospace">cilly</span> also passes along to
-<span style="font-family:monospace">cilly.asm</span> flags such as <span style="font-family:monospace">--MSVC</span> that both need to know
+<a id="sec-cilly.native-options"></a></p><p>All of the options that start with <span style="font-family:monospace">--</span> and are not understood by
+<span style="font-family:monospace">cilly</span> are passed on to <span style="font-family:monospace">cilly.native</span>. <span style="font-family:monospace">cilly</span> also passes along to
+<span style="font-family:monospace">cilly.native</span> flags such as <span style="font-family:monospace">--MSVC</span> that both need to know
 about. The following options are supported. Many of these flags also
 have corresponding &#X201C;<span style="font-family:monospace">--no</span>*&#X201D; versions if you need to go back to
 the default, as in &#X201C;<span style="font-family:monospace">--nowarnall</span>&#X201D;.</p><p>&#XA0;&#XA0;&#XA0;&#XA0;&#XA0;&#XA0; <span style="font-weight:bold">General Options:</span>
@@ -230,10 +230,10 @@ in <span style="font-family:monospace">src/cil.ml</span>.
 </li><li class="li-itemize"><span style="font-family:monospace">--dopartial</span>. Do interprocedural partial evaluation and
 constant folding. Implemented in <span style="font-family:monospace">src/ext/partial.ml</span>. 
 </li><li class="li-itemize"><span style="font-family:monospace">--dosimpleMem</span>. Simplify all memory expressions. Implemented in
-<span style="font-family:monospace">src/ext/simplemem.ml</span>. <p>For an up-to-date list of available options, run <span style="font-family:monospace">cilly.asm --help</span>. </p></li></ul>
+<span style="font-family:monospace">src/ext/simplemem.ml</span>. <p>For an up-to-date list of available options, run <span style="font-family:monospace">cilly.native --help</span>.</p></li></ul>
 <h3 id="sec20" class="subsection">7.3&#XA0;&#XA0;Internal Options</h3>
 <p>
-<a id="sec-cilly-internal-options"></a></p><p>All of the <span style="font-family:monospace">cilly.asm</span> options described above can be set
+<a id="sec-cilly-internal-options"></a></p><p>All of the <span style="font-family:monospace">cilly.native</span> options described above can be set
 programmatically &#X2013; see <span style="font-family:monospace">src/ciloptions.ml</span> or the individual
 extensions to see how. Some options should be set before parsing to
 be effective. </p><p>Additionally, a few CIL options have no command-line flag and can only
@@ -250,7 +250,16 @@ into &#X201C;<span style="font-family:monospace">void* tmp = malloc(n); T* x = (
 need all casts to be made explicit, you can set
 <span style="font-family:monospace">Cabs2cil.doCollapseCallCast</span> to true so that CIL won&#X2019;t insert a
 temporary and you can more easily determine the allocation type from
-calls to <span style="font-family:monospace">malloc</span>.</p></li></ul>
+calls to <span style="font-family:monospace">malloc</span>.</p><p>You should set <span style="font-family:monospace">Cabs2cil.doCollapseCallCast</span> in the module requiring it,
+as part of <span style="font-family:monospace">fd_extraopt</span>. Here is an example taken from <span style="font-family:monospace">ext/cqualann.ml</span>:
+</p><pre class="verbatim">    fd_extraopt = [ "--doCollapseCallCast",
+                    Arg.Set Cabs2cil.doCollapseCallCast,
+                    "use this flag to improve handling of malloc" ];
+</pre><p>Note that setting <span style="font-family:monospace">Cabs2cil.doCollapseCallCast</span> in the <span style="font-family:monospace">fd_doit</span> of a
+module does not work, since the <span style="font-family:monospace">fd_doit</span> of each module is executed after
+building the CIL AST with the <span style="font-family:monospace">Cabs2cil</span> module, which calls the method
+<span style="font-family:monospace">Cabs2cil.afterConversion</span> performing the actual collapse. On the other hand,
+the <span style="font-family:monospace">fd_extraopt</span> of a module is executed before Cabs2cil.</p></li></ul>
 <h3 id="sec21" class="subsection">7.4&#XA0;&#XA0;Specifying a machine model</h3>
 <p>
 <a id="sec-cilmachine"></a></p><p>The <span style="font-family:monospace">--envmachine</span> option tells CIL to get its machine model from

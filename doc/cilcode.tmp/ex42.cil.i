@@ -1,5 +1,8 @@
 # 1 "cilcode.tmp/ex42.cil.c"
+# 1 "<built-in>"
 # 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 1 "<command-line>" 2
 # 1 "cilcode.tmp/ex42.cil.c"
 # 1 "cilcode.tmp/ex42.c"
 static void *jtab[2] ;
@@ -10,7 +13,7 @@ static int jtab_init = 0;
 # 2 "cilcode.tmp/ex42.c"
 static int doit(int x )
 {
-  int __compgoto ;
+  unsigned long __compgoto ;
 
   {
 # 5 "cilcode.tmp/ex42.c"
@@ -23,13 +26,13 @@ static int doit(int x )
     jtab_init = 1;
   }
 # 10 "cilcode.tmp/ex42.c"
-  __compgoto = (int )jtab[x];
+  __compgoto = (unsigned long )jtab[x];
 # 10 "cilcode.tmp/ex42.c"
   switch (__compgoto) {
-  case 1:
+  case 1UL:
 # 10 "cilcode.tmp/ex42.c"
   goto lbl2;
-  case 0:
+  case 0UL:
 # 10 "cilcode.tmp/ex42.c"
   goto lbl1;
   default:

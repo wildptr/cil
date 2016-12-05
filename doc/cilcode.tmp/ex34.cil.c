@@ -2,14 +2,14 @@
 /* print_CIL_Input is true */
 
 #line 1 "cilcode.tmp/ex34.c"
-struct __anonstruct_nested_2 {
+struct __anonstruct_nested_109580352 {
    int y ;
    int z ;
 };
 #line 1 "cilcode.tmp/ex34.c"
-struct __anonstruct_i_1 {
+struct __anonstruct_i_84397384 {
    int x ;
-   struct __anonstruct_nested_2 nested ;
+   struct __anonstruct_nested_109580352 nested ;
 };
 #line 1 "cilcode.tmp/ex34.c"
-struct __anonstruct_i_1 i  =    {1, {2, 6}};
+struct __anonstruct_i_84397384 i  =    {1, {2, 6}};
