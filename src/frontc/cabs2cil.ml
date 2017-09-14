@@ -1791,7 +1791,7 @@ let makeGlobalVarinfo (isadef: bool) (vi: varinfo) : varinfo * bool =
                 vi.vname d_loc oldloc);
 
     (* New-style extern inline handling: the real definition replaces the extern
-       inline one *)
+       inline one.  *)
     if (not !Cil.oldstyleExternInline) && oldvi.vstorage = Extern && oldvi.vinline && isadef then begin
       H.remove alreadyDefined oldvi.vname;
       theFile := Util.list_map (fun g -> match g with
@@ -1802,9 +1802,13 @@ let makeGlobalVarinfo (isadef: bool) (vi: varinfo) : varinfo * bool =
      * storage.  *)
     let newstorage = (** See 6.2.2 *)
       match oldvi.vstorage, vi.vstorage with
-        (* Extern and something else is that thing *)
+        (* Extern and something else is that thing. FIXME: WHY? That's not
+         * what 6.2.2 says.
+         * For "extern inline", it's essential that we remember when we've
+         * seen Extern, since its presence on *any* prototype has a crucial
+         * effect on linking semantics. See 6.7.4 of the C11 spec. *)
       | Extern, other
-      | other, Extern -> other
+      | other, Extern -> if (oldvi.vinline || vi.vinline) then Extern else other
 
       | NoStorage, other
       | other, NoStorage ->  other
