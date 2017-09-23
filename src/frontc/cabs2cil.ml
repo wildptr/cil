@@ -1806,14 +1806,17 @@ let makeGlobalVarinfo (isadef: bool) (vi: varinfo) : varinfo * bool =
          * what 6.2.2 says.
          * For "extern inline", it's essential that we remember when we've
          * seen Extern, since its presence on *any* prototype has a crucial
-         * effect on linking semantics. See 6.7.4 of the C11 spec. *)
+         * effect on linking semantics. See 6.7.4 of the C11 spec.
+         * The same effect takes place if we see "nostorage" when "inline"
+         * is *not* specified, so we have to look out for that too. *)
       | Extern, other
       | other, Extern -> if (oldvi.vinline || vi.vinline) then Extern else other
-
+      | NoStorage, NoStorage ->
+                let protoIsInline = (isadef && oldvi.vinline) || ((not isadef) && vi.vinline) in
+                let otherIsInline = (isadef && vi.vinline) || ((not isadef) && oldvi.vinline) in
+                if protoIsInline && not otherIsInline then Extern else NoStorage
       | NoStorage, other
-      | other, NoStorage ->  other
-
-
+      | other, NoStorage -> if (oldvi.vinline || vi.vinline) then Extern else other
       | _ ->
 	  if vi.vstorage != oldvi.vstorage then
             ignore (warn
@@ -2643,6 +2646,7 @@ and makeVarInfoCabs
   vi.vstorage <- sto;
   vi.vattr <- nattr;
   vi.vdecl <- ldecl;
+  vi.vinline <- inline;
 
   if false then 
     ignore (E.log "Created varinfo %s : %a\n" vi.vname d_type vi.vtype); 
@@ -5364,8 +5368,13 @@ and createGlobal (specs : (typ * storage * bool * A.attribute list))
                vi.vname);
       (* sm: if it's a function prototype, and the storage class *)
       (* isn't specified, make it 'extern'; this fixes a problem *)
-      (* with no-storage prototype and static definition *)
-      if vi.vstorage = NoStorage then 
+      (* with no-storage prototype and static definition.        *)
+      (* srk adds: should only apply to non-inline functions,    *)
+      (* since "extern" means something different from <nothing> *)
+      (* in that case.                                           *)
+      if vi.vstorage = NoStorage
+        && not vi.vinline (* works now that makeVarInfoCabs sets vinline *)
+        && (let (_, _, inl, _) = specs in not inl) then
         (*(trace "sm" (dprintf "adding extern to prototype of %s\n" n));*)
         vi.vstorage <- Extern;
     end;
