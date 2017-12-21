@@ -443,10 +443,8 @@ let currentFunctionFDEC: fundec ref = ref dummyFunDec
 
 
 (* Generate unique ids for structs, with a best-effort to base them on the
- * structure of the type, so that the same anonymous struct in different
- * compilation units gets the same name - this is important to preserve
- * compatible types. This is not bullet-proof because we do not
- * normalize the context at all. *)
+ * header-file location of the type, so that the same anonymous struct in
+ * different compilation units gets the same name. *)
 let structIds = ref []
 let newStructId id =
   assert(id >= 0);
@@ -461,7 +459,7 @@ let newStructId id =
   structIds := id' :: !structIds ;
   id'
 let anonStructName (k: string) (suggested: string) (context: 'a) =
-  let id = newStructId (Hashtbl.hash_param 100 1000 context) in
+  let id = newStructId (Hashtbl.hash_param 100 1000 (!currentLoc.file, !currentLoc.line)) in
   "__anon" ^ k ^ (if suggested <> "" then "_"  ^ suggested else "")
   ^ "_" ^ (string_of_int id)
 
