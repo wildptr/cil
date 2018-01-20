@@ -179,6 +179,11 @@ let options : (string * Arg.spec * string) list =
                 Cprint.printLnComment := true),
     " Print #line directives in the output, but put them in comments";
 
+    "--printLnPost",
+    Arg.Unit (fun _ ->
+                Cil.lineDirectiveStyle := Some Cil.LinePreprocessorOutput),
+    " Print #line directives in the output in post-preprocessing style (\"# ...\")";
+
     "--commPrintLnSparse", 
     Arg.Unit (fun _ ->
                 Cil.lineDirectiveStyle := Some Cil.LineCommentSparse;
