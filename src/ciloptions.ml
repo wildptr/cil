@@ -179,6 +179,11 @@ let options : (string * Arg.spec * string) list =
                 Cprint.printLnComment := true),
     " Print #line directives in the output, but put them in comments";
 
+    "--printLnPost",
+    Arg.Unit (fun _ ->
+                Cil.lineDirectiveStyle := Some Cil.LinePreprocessorOutput),
+    " Print #line directives in the output in post-preprocessing style (\"# ...\")";
+
     "--commPrintLnSparse", 
     Arg.Unit (fun _ ->
                 Cil.lineDirectiveStyle := Some Cil.LineCommentSparse;
@@ -328,6 +333,16 @@ let options : (string * Arg.spec * string) list =
     Arg.Clear Cil.useCaseRange,
      (" Transform case ranges to sequence of cases" ^
        is_default (not !Cil.useCaseRange));
+
+    "--oldStyleExternInline",
+    Arg.Set Cil.oldstyleExternInline,
+    (" Use gnu89-style extern inline semantics" ^
+       is_default !Cil.oldstyleExternInline);
+
+    "--noOldStyleExternInline",
+    Arg.Clear Cil.oldstyleExternInline,
+     (" Use C99 extern inline semantics" ^
+       is_default (not !Cil.oldstyleExternInline));
 
     "--keepunused",
     Arg.Set Rmtmps.keepUnused,

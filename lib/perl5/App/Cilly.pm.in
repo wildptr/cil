@@ -1996,8 +1996,16 @@ sub new {
 	    
 	    # C Language Options
             "-ansi" => { TYPE => 'ALLARGS' },
-            '-std=' => { TYPE => 'ALLARGS' },
+            '-std=' => { TYPE => 'ALLARGS',
+			 RUN => sub { if($_[1] =~ /-std=gnu(89|90)/) {
+                             push @{$stub->{CILARGS}},"--oldStyleExternInline";
+                         }
+                        }},
 	    "-aux-info\$" => { TYPE => 'CC', ONEMORE => 1 },
+            '-fgnu89-inline' => { TYPE => 'CC',
+			 RUN => sub { push @{$stub->{CILARGS}},"--oldStyleExternInline"; }},
+            '-fno-gnu89-inline' => { TYPE => 'CC',
+			 RUN => sub { push @{$stub->{CILARGS}},"--noOldStyleExternInline"; }},
              # GCC might define some more macros, eg. for -fPIC, so pass
              # the -f to the preprocessor and the compiler
             "-f" => { TYPE => 'ALLARGS' },
@@ -2010,6 +2018,7 @@ sub new {
 	    '-Wp,' => { TYPE => 'EARLY_PREPROC' },
 	    '-Wl,--(no-)?whole-archive$' => { TYPE => 'OSOURCE' },
             '-Wl,' => { TYPE => 'LINK' },
+            '-Wa,' => { TYPE => 'CC' },
 	    
 	    # Warning Options
             "-pedantic\$" => { TYPE => 'ALLARGS' },
@@ -2269,7 +2278,7 @@ sub setVersion {
          . join(' ', @{$self->{PPARGS}}) ." |") 
         || die "Cannot start GNUCC";
     while(<VER>) {
-        if($_ =~ m|^(\d+\S+)| || $_ =~ m|^(egcs-\d+\S+)|) {
+        if($_ =~ m|^(\d+\S*)| || $_ =~ m|^(egcs-\d+\S+)|) {
             $cversion = "gcc_$1";
             close(VER) || die "Cannot start GNUCC\n";
             $self->{CVERSION} = $cversion;

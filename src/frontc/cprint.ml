@@ -173,6 +173,7 @@ and print_type_spec = function
   | Tint -> print "int "
   | Tlong -> print "long "
   | Tint64 -> print "__int64 "
+  | Tint128 -> print "__int128 "
   | Tfloat -> print "float "
   | Tdouble -> print "double "
   | Tsigned -> printu "signed"
