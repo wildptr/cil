@@ -403,6 +403,13 @@ testrun/inline-srk-c11+oldinline:
           -o "$(TESTDIR)"/small1/inline-srk-c11+oldinline
 	"$(TESTDIR)"/small1/inline-srk-c11+oldinline
 
+# We also make a variant of extinline2 but using --oldStyleExternInline
+testrun/extinline2a: mustbegcc
+	$(CILLY) --oldStyleExternInline -g -O2 \
+          -std=gnu89 "$(TESTDIR)"/small1/extinline2a.c \
+          -o "$(TESTDIR)"/small1/extinline2a
+	"$(TESTDIR)"/small1/extinline2a
+
 ### Generic test
 testfile/% : 
 	$(CILLY) /TC $*

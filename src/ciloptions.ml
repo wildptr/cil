@@ -336,12 +336,12 @@ let options : (string * Arg.spec * string) list =
 
     "--oldStyleExternInline",
     Arg.Set Cil.oldstyleExternInline,
-    (" Use gnu89-style extern inline semantics" ^
+    (" Full definitions replace extern inline ones only for later calls" ^
        is_default !Cil.oldstyleExternInline);
 
     "--noOldStyleExternInline",
     Arg.Clear Cil.oldstyleExternInline,
-     (" Use C99 extern inline semantics" ^
+     (" Full definitions completely replace extern inline ones" ^
        is_default (not !Cil.oldstyleExternInline));
 
     "--keepunused",
