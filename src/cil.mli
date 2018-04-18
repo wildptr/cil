@@ -287,6 +287,8 @@ and ikind =
   | ILongLong   (** [long long] (or [_int64] on Microsoft Visual C) *)
   | IULongLong  (** [unsigned long long] (or [unsigned _int64] on Microsoft 
                     Visual C) *)
+  | IInt128     (** [__int128] *)
+  | IUInt128    (** [__uint128] *)
 
 (** Various kinds of floating-point numbers*)
 and fkind = 
@@ -483,6 +485,9 @@ and varinfo = {
     (** A list of attributes associated with the variable.*)
     mutable vstorage: storage;          
     (** The storage-class *)
+
+    (** All GVarDecls, GVars and GFuns that share this varinfo, if it's global *)
+    mutable vvardecls : (global * storage * bool) list;
 
     mutable vglob: bool;	        
     (** True if this is a global variable*)
@@ -2141,7 +2146,7 @@ class type cilPrinter = object
   method setPrintInstrTerminator : string -> unit
   method getPrintInstrTerminator : unit -> string
 
-  method pVDecl: unit -> varinfo -> Pretty.doc
+  method pVDecl: ?beginsFunDef:bool -> unit -> varinfo -> Pretty.doc
     (** Invoked for each variable declaration. Note that variable 
      * declarations are all the [GVar], [GVarDecl], [GFun], all the [varinfo] 
      * in formals of function types, and the formals and locals for function 

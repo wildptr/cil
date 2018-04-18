@@ -94,6 +94,7 @@ let init ~(prog: string) : Lexing.lexbuf =
       ("else", ELSE);
       ("__attribute__", ATTRIBUTE); ("__attribute", ATTRIBUTE);
       ("__int64", INT64);
+      ("__int128", INT128);
       ("__builtin_va_arg", BUILTIN_VA_ARG);
     ];
   E.startParsingFromString prog

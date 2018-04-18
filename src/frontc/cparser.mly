@@ -254,7 +254,7 @@ let transformOffsetOf (speclist, dtype) member =
 %token <int64 list * Cabs.cabsloc> CST_WSTRING
 
 %token EOF
-%token<Cabs.cabsloc> CHAR INT BOOL DOUBLE FLOAT VOID INT64 INT32
+%token<Cabs.cabsloc> CHAR INT BOOL DOUBLE FLOAT VOID INT128 INT64 INT32
 %token<Cabs.cabsloc> ENUM STRUCT TYPEDEF UNION
 %token<Cabs.cabsloc> SIGNED UNSIGNED LONG SHORT
 %token<Cabs.cabsloc> VOLATILE EXTERN STATIC CONST RESTRICT AUTO REGISTER
@@ -977,6 +977,7 @@ type_spec:   /* ISO 6.7.2 */
 |   INT             { Tint, $1 }
 |   LONG            { Tlong, $1 }
 |   INT64           { Tint64, $1 }
+|   INT128          { Tint128, $1 }
 |   FLOAT           { Tfloat, $1 }
 |   DOUBLE          { Tdouble, $1 }
 |   SIGNED          { Tsigned, $1 }
@@ -1545,8 +1546,8 @@ asmclobber:
 | COLON asmcloberlst_ne                 { $2 }
 ;
 asmcloberlst_ne:
-   one_string_constant                           { [$1] }
-|  one_string_constant COMMA asmcloberlst_ne     { $1 :: $3 }
+   string_constant                           { [fst $1] }
+|  string_constant COMMA asmcloberlst_ne     { fst $1 :: $3 }
 ;
   
 %%

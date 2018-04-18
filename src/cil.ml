@@ -286,6 +286,8 @@ and ikind =
   | ILongLong   (** [long long] (or [_int64] on Microsoft Visual C) *)
   | IULongLong  (** [unsigned long long] (or [unsigned _int64] on Microsoft 
                     Visual C) *)
+  | IInt128     (** [__int128] *)
+  | IUInt128    (** [__uint128] *)
 
 (** Various kinds of floating-point numbers*)
 and fkind = 
@@ -418,6 +420,8 @@ and varinfo = {
     (* The other fields are not used in varinfo when they appear in the formal 
      * argument list in a [TFun] type *)
 
+    (** All globals that share this varinfo, if it's global *)
+    mutable vvardecls : (global * storage * bool) list;
 
     mutable vglob: bool;	        (** True if this is a global variable*)
 
@@ -1272,14 +1276,14 @@ let isSigned = function
   | IUShort
   | IUInt
   | IULong
-  | IULongLong ->
-      false
+  | IULongLong
+  | IUInt128 -> false
   | ISChar
   | IShort
   | IInt
   | ILong
-  | ILongLong ->
-      true
+  | ILongLong
+  | IInt128 -> true
   | IChar ->
       not !M.theMachine.M.char_is_unsigned
 
@@ -1392,7 +1396,7 @@ let attributeHash: (string, attributeClass) H.t =
 
   List.iter (fun a -> H.add table a (AttrFunType false))
     [ "format"; "regparm"; "longcall"; 
-      "noinline"; "always_inline"; "gnu_inline"; "leaf";
+      "noinline"; "always_inline"; "gnu_inline"; "leaf"; "cold"; "alloc_size";
       "artificial"; "warn_unused_result"; "nonnull";
     ];
 
@@ -1642,6 +1646,8 @@ let d_ikind () = function
   | IULongLong -> 
       if !msvcMode then text "unsigned __int64" 
       else text "unsigned long long"
+  | IInt128 -> text "__int128"
+  | IUInt128 -> text "unsigned __int128"
 
 let d_fkind () = function
     FFloat -> text "float"
@@ -1666,6 +1672,7 @@ let bytesSizeOfInt (ik: ikind): int =
   | IShort | IUShort -> !M.theMachine.M.sizeof_short
   | ILong | IULong -> !M.theMachine.M.sizeof_long
   | ILongLong | IULongLong -> !M.theMachine.M.sizeof_longlong
+  | IInt128 | IUInt128 -> 16
 
 (* constant *)
 let d_const () c = 
@@ -1681,6 +1688,7 @@ let d_const () c =
         | IULong -> "UL"
         | ILongLong -> if !msvcMode then "L" else "LL"
         | IULongLong -> if !msvcMode then "UL" else "ULL"
+        (* 128-bit integer types do not have literals *)
         | _ -> ""
       in
       let prefix : string = 
@@ -1933,6 +1941,7 @@ let unsignedVersionOf (ik:ikind): ikind =
   | IInt -> IUInt
   | ILong -> IULong
   | ILongLong -> IULongLong
+  | IInt128 -> IUInt128
   | _ -> ik          
 
 let signedVersionOf (ik:ikind): ikind =
@@ -1942,6 +1951,7 @@ let signedVersionOf (ik:ikind): ikind =
   | IUInt -> IInt
   | IULong -> ILong
   | IULongLong -> ILongLong
+  | IUInt128 -> IInt128
   | _ -> ik
 
 (* Return the integer conversion rank of an integer kind *)
@@ -1953,6 +1963,7 @@ let intRank (ik:ikind) : int =
   | IInt | IUInt -> 3
   | ILong | IULong -> 4
   | ILongLong | IULongLong -> 5
+  | IInt128 | IUInt128 -> 6
 
 (* Return the common integer kind of the two integer arguments, as
    defined in ISO C 6.3.1.8 ("Usual arithmetic conversions") *)
@@ -1985,6 +1996,7 @@ let intKindForSize (s:int) (unsigned:bool) : ikind =
     else if s = !M.theMachine.M.sizeof_long then IULong
     else if s = !M.theMachine.M.sizeof_short then IUShort
     else if s = !M.theMachine.M.sizeof_longlong then IULongLong
+    else if s = 128 then IUInt128
     else raise Not_found
   else
     (* Test the most common sizes first *)
@@ -1993,6 +2005,7 @@ let intKindForSize (s:int) (unsigned:bool) : ikind =
     else if s = !M.theMachine.M.sizeof_long then ILong
     else if s = !M.theMachine.M.sizeof_short then IShort
     else if s = !M.theMachine.M.sizeof_longlong then ILongLong
+    else if s = 128 then IInt128
     else raise Not_found
 
 let floatKindForSize (s:int) = 
@@ -2053,21 +2066,23 @@ let fitsInInt (k: ikind) (i: cilint) : bool =
 (* Return the smallest kind that will hold the integer's value.  The
    kind will be unsigned if the 2nd argument is true, signed
    otherwise.  Note that if the value doesn't fit in any of the
-   available types, you will get ILongLong (2nd argument false) or
-   IULongLong (2nd argument true). *)
+   available types, you will get IInt128 (2nd argument false) or
+   IUInt128 (2nd argument true). *)
 let intKindForValue (i: cilint) (unsigned: bool) = 
   if unsigned then
     if fitsInInt IUChar i then IUChar
     else if fitsInInt IUShort i then IUShort
     else if fitsInInt IUInt i then IUInt
     else if fitsInInt IULong i then IULong
-    else IULongLong
+    else if fitsInInt IULongLong i then IULongLong
+    else IInt128
   else
     if fitsInInt ISChar i then ISChar
     else if fitsInInt IShort i then IShort
     else if fitsInInt IInt i then IInt
     else if fitsInInt ILong i then ILong
-    else ILongLong
+    else if fitsInInt ILongLong i then ILongLong
+    else IUInt128
 
 (** If the given expression is an integer constant or a CastE'd
     integer constant, return that constant's value as an ikint, int64 pair. 
@@ -2126,6 +2141,7 @@ let rec alignOf_int t =
     | TInt((IInt|IUInt), _) -> !M.theMachine.M.alignof_int
     | TInt((ILong|IULong), _) -> !M.theMachine.M.alignof_long
     | TInt((ILongLong|IULongLong), _) -> !M.theMachine.M.alignof_longlong
+    | TInt((IInt128|IUInt128), _) -> 128
     | TEnum(ei, _) -> alignOf_int (TInt(ei.ekind, []))
     | TFloat(FFloat, _) -> !M.theMachine.M.alignof_float 
     | TFloat(FDouble, _) -> !M.theMachine.M.alignof_double
@@ -2944,6 +2960,7 @@ let initGccBuiltins () : unit =
   H.add h "__builtin_inff" (floatType, [], false);
   H.add h "__builtin_infl" (longDoubleType, [], false);
   H.add h "__builtin_memcpy" (voidPtrType, [ voidPtrType; voidConstPtrType; sizeType ], false);
+  H.add h "__builtin_memmove" (voidPtrType, [ voidPtrType; voidConstPtrType; sizeType ], false);
   H.add h "__builtin_mempcpy" (voidPtrType, [ voidPtrType; voidConstPtrType; sizeType ], false);
   H.add h "__builtin_memset" (voidPtrType, 
                               [ voidPtrType; intType; intType ], false);
@@ -3027,6 +3044,7 @@ let initGccBuiltins () : unit =
   H.add h "__builtin_strncmp" (intType, [ charConstPtrType; charConstPtrType; sizeType ], false);
   H.add h "__builtin_strncpy" (charPtrType, [ charPtrType; charConstPtrType; sizeType ], false);
   H.add h "__builtin_strspn" (sizeType, [ charConstPtrType; charConstPtrType ], false);
+  H.add h "__builtin_strstr" (charPtrType, [ charConstPtrType; charConstPtrType ], false);
   H.add h "__builtin_strpbrk" (charPtrType, [ charConstPtrType; charConstPtrType ], false);
   (* When we parse builtin_types_compatible_p, we change its interface *)
   H.add h "__builtin_types_compatible_p"
@@ -3185,7 +3203,7 @@ class type cilPrinter = object
   method setPrintInstrTerminator : string -> unit
   method getPrintInstrTerminator : unit -> string
 
-  method pVDecl: unit -> varinfo -> doc
+  method pVDecl: ?beginsFunDef:bool -> unit -> varinfo -> doc
     (** Invoked for each variable declaration. Note that variable 
      * declarations are all the [GVar], [GVarDecl], [GFun], all the [varinfo] 
      * in formals of function types, and the formals and locals for function 
@@ -3292,14 +3310,23 @@ class defaultCilPrinterClass : cilPrinter = object (self)
   method pVar (v:varinfo) = text v.vname
 
   (* variable declaration *)
-  method pVDecl () (v:varinfo) =
+  method pVDecl ?(beginsFunDef = false) () (v:varinfo) =
     let stom, rest = separateStorageModifiers v.vattr in
     (* First the storage modifiers *)
+    (* If we're printing a function definition, we handle inlines specially.
+     * Getting this right is a bit hairy. Let's try as follows. The definition
+     * should take the "max" of *)
     text (if v.vinline then "__inline " else "")
-      ++ d_storage () v.vstorage
+      (* suppress extern on a function definition if it's not inline,;
+         suppress extern on a function prototype if it's not been used consistently *)
+      ++ (let suppressExtern = (beginsFunDef && not v.vinline) || (not beginsFunDef)
+         in (*if v.vstorage = Extern && suppressExtern then text " " else *) d_storage () v.vstorage)
       ++ (self#pAttrs () stom)
       ++ (self#pType (Some (text v.vname)) () v.vtype)
-      ++ text " "
+      ++ text (if beginsFunDef then " /* comes from pVDecl with beginsFunDef; vinline is really "
+        ^ (if v.vinline then "true" else "false")
+        ^ " and the varinfo, magic " ^ (string_of_int (Obj.magic v))
+        ^ ", also has " ^ (string_of_int (List.length v.vvardecls))^ " entries in vvardecls */ " else " ")
       ++ self#pAttrs () rest
 
   (*** L-VALUES ***)
@@ -3962,20 +3989,45 @@ class defaultCilPrinterClass : cilPrinter = object (self)
     match g with 
     | GFun (fundec, l) ->
         (* If the function has attributes then print a prototype because 
-        * GCC cannot accept function attributes in a definition *)
+         * GCC cannot accept function attributes in a definition. Also,
+         * for inline functions, always print a prototype because this
+         * affects their linkage semantics (C11 section 6.7.4). *)
         let oldattr = fundec.svar.vattr in
-        (* Always pring the file name before function declarations *)
-        let proto = 
-          if oldattr <> [] then 
-            (self#pLineDirective l) ++ (self#pVDecl () fundec.svar) 
-              ++ chr ';' ++ line 
-          else nil in
-        (* Temporarily remove the function attributes *)
+        (* Always print the file name before function declarations *)
+        let maybeExtraProtos =
+          (* We always print a prototype for funs with attrs,
+           * and for definitions of extern inlines.
+           * For a function declared inline anywhere, we prototype *all* of the
+           * declaration cases found in its vvardecls. *)
+          let declaredInline = List.fold_left (fun acc -> fun (_, _, inl) -> acc || inl) false
+                 fundec.svar.vvardecls
+          in
+          if oldattr <> [] && not declaredInline then
+            (self#pLineDirective l) ++ (self#pVDecl () fundec.svar)
+              ++ chr ';' ++ text "/* extra prototype for attrs */" ++ line
+          else if declaredInline then
+            List.fold_left (fun acc -> fun (glob, storage, inl) ->
+                     let (oldinl, oldsto) = (fundec.svar.vinline, fundec.svar.vstorage)
+                     in
+                     (fundec.svar.vinline <- inl;
+                     fundec.svar.vstorage <- storage;
+                     let res = acc ++ (self#pVDecl () fundec.svar) ++ (text "; /* extra prototype for inline */") ++ line
+                     in
+                     fundec.svar.vinline <- oldinl;
+                     fundec.svar.vstorage <- oldsto;
+                     res)
+                 )
+                 (text "")
+                 fundec.svar.vvardecls
+          else nil (* empty string *)
+          in
+        (* Temporarily remove the function attributes to print the body.
+         * Note that 'pFunDecl' prints the body, not the prototype. *)
         fundec.svar.vattr <- [];
-        let body = (self#pLineDirective ~forcefile:true l) 
+        let body = (self#pLineDirective ~forcefile:true l)
                       ++ (self#pFunDecl () fundec) in
         fundec.svar.vattr <- oldattr;
-        proto ++ body ++ line
+        maybeExtraProtos ++ body ++ line
           
     | GType (typ, l) ->
         self#pLineDirective ~forcefile:true l ++
@@ -4055,7 +4107,7 @@ class defaultCilPrinterClass : cilPrinter = object (self)
         end else
           self#pLineDirective l ++
             (self#pVDecl () vi)
-            ++ text ";\n"
+            ++ text ("; /* has total " ^ (string_of_int (List.length vi.vvardecls)) ^ " decls */ \n")
 
     | GAsm (s, l) ->
         self#pLineDirective l ++
@@ -4101,21 +4153,38 @@ class defaultCilPrinterClass : cilPrinter = object (self)
      (* For all except functions and variable with initializers, use the 
       * pGlobal *)
      match g with 
-       GFun (fdec, l) -> 
+       GFun (fundec, l) ->
          (* If the function has attributes then print a prototype because 
           * GCC cannot accept function attributes in a definition *)
-         let oldattr = fdec.svar.vattr in
-         let proto = 
-           if oldattr <> [] then 
-             (self#pLineDirective l) ++ (self#pVDecl () fdec.svar) 
-               ++ chr ';' ++ line
-           else nil in
+         let oldattr = fundec.svar.vattr in
+         let maybeExtraProtos =
+           let declaredInline = List.fold_left (fun acc -> fun (_, _, inl) -> acc || inl) false
+                 fundec.svar.vvardecls
+           in
+           if oldattr <> [] && not declaredInline then
+             (self#pLineDirective l) ++ (self#pVDecl () fundec.svar)
+               ++ text"; /* attrs: extra prototype dump */" ++ line
+           else if declaredInline then
+            List.fold_left (fun acc -> fun (glob, storage, inl) ->
+                     let oldinl, oldsto = (fundec.svar.vinline, fundec.svar.vstorage) in
+                     (fundec.svar.vinline <- inl;
+                     fundec.svar.vstorage <- storage;
+                     let res = acc ++ (self#pVDecl () fundec.svar)
+						++ (text "; /* inline: extra prototype dump */") ++ line
+                     in
+                     fundec.svar.vinline <- oldinl;
+                     fundec.svar.vstorage <- oldsto;
+                     res)
+                 )
+                 (text "")
+                 fundec.svar.vvardecls
+            else nil in
          fprint out !lineLength
-           (proto ++ (self#pLineDirective ~forcefile:true l));
+           (maybeExtraProtos ++ (self#pLineDirective ~forcefile:true l));
          (* Temporarily remove the function attributes *)
-         fdec.svar.vattr <- [];
-         fprint out !lineLength (self#pFunDecl () fdec);               
-         fdec.svar.vattr <- oldattr;
+         fundec.svar.vattr <- [];
+         fprint out !lineLength (self#pFunDecl () fundec);
+         fundec.svar.vattr <- oldattr;
          output_string out "\n"
 
      | GVar (vi, {init = Some i}, l) -> begin
@@ -4149,7 +4218,7 @@ class defaultCilPrinterClass : cilPrinter = object (self)
        ++ text ";"
        
   method private pFunDecl () f =
-      self#pVDecl () f.svar
+      self#pVDecl ~beginsFunDef:true () f.svar
       ++  line
       ++ text "{ "
       ++ (align
@@ -4157,8 +4226,8 @@ class defaultCilPrinterClass : cilPrinter = object (self)
             ++ line
             ++ (docList ~sep:line
                 (fun vi -> match vi.vinit.init with
-                | None -> self#pVDecl () vi ++ text ";"
-                | Some i -> self#pVDecl () vi ++ text " = " ++
+                | None -> self#pVDecl ~beginsFunDef:false () vi ++ text ";"
+                | Some i -> self#pVDecl ~beginsFunDef:false () vi ++ text " = " ++
                     self#pInit () i ++ text ";")
                 () f.slocals)
             ++ line ++ line
@@ -4885,6 +4954,7 @@ let makeVarinfo global name ?init typ =
       vdecl = lu;
       vinit = {init=init};
       vinline = false;
+      vvardecls = [];
       vattr = [];
       vstorage = NoStorage;
       vaddrof = false;
@@ -7104,6 +7174,7 @@ let convertInts (i1:int64) (ik1:ikind) (i2:int64) (ik2:ikind)
       | IInt | IUInt -> 3
       | ILong | IULong -> 4
       | ILongLong | IULongLong -> 5
+      | IInt128 | IUInt128 -> 6
     in
     let r1 = rank ik1 in
     let r2 = rank ik2 in

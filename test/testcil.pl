@@ -199,6 +199,7 @@ addTest("test/asm2 _GNUCC=1");
 addTest("test/asm3 _GNUCC=1");
 addTest("test/asm4 _GNUCC=1");
 addTest("testobj/asm5 _GNUCC=1");
+addTest("testobj/asm-clobber-concat _GNUCC=1");
 
 addTest("testrun/offsetof");
 addTest("testrun/offsetof1");
@@ -588,7 +589,7 @@ addTest("test/sync-2 _GNUCC=1");
 addTest("test/sync-3 _GNUCC=1");
 addTest("testrun/comparisons");
 addTest("testrun/assign");
-    
+addTest("testrun/preempt-builtin");    
 
 
 
@@ -710,6 +711,7 @@ addTest("testrun/blockattr2 USECFG=1");
 addTest("testrun/extinline2");
 addTest("test/extinline3");
 addTest("test/extinline4");
+addTest("testrun/extinline2a");
 addTest("testrun/bool");
 addTest("testrun/booleanOp USE_LOGICAL_OPERATORS=1");
 addTest("test/va_arg_pack");
@@ -718,6 +720,11 @@ addBadComment("testrun/compound1", "Notbug. Undefined behavior (probably).");
 addTest("testrun/compound2");
 
 addTest("test/shell-escape SHELL_ESCAPE=1");
+addTest("testpipe/simple");
+
+addTest("testrun/inline-srk-gnu89 $gcc");
+addTest("testrun/inline-srk-c11 $gcc");
+addTest("testrun/inline-srk-c11+oldinline $gcc");
 
 # ---------------- c-torture -------------
 ## if we have the c-torture tests add them
